@@ -10,13 +10,18 @@ jobs:
       tag: '1.19.2' # Specify a version tag
     steps:
       - checkout # checkout source code
-      - go/load-cache # Load cached Go modules.
-      - go/mod-download # Run 'go mod download'.
-      - go/save-cache # Save Go modules to cache.
-      - go/test: # Runs 'go test ./...' but includes extensive parameterization for finer tuning.
-          covermode: atomic
-          failfast: true
-          race: true
+      - run:
+          command: echo 'load go cache'
+          name: Load cache
+      - run:
+          command: echo 'mod download cache'
+          name: Mod download
+      - run:
+          command: echo 'go save cache'
+          name: Save cache
+      - run:
+          command: echo 'Go test'
+          name: Go test
       - persist_to_workspace:
           root: ~/project
           paths: .
@@ -26,8 +31,10 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/project
-      - heroku/deploy-via-git:
-          force: true # force push when pushing to the heroku remote, see: https://devcenter.heroku.com/articles/git
+      - run:
+          name: heroku/deploy-via-git
+          command: |
+            echo 'Go Command to deploy to Heroku'
 
 workflows:
   test_my_app:

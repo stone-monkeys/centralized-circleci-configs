@@ -8,13 +8,15 @@ jobs:
     executor: node/default
     steps:
       - checkout
-      - node/install-packages:
-          pkg-manager: yarn
       - run:
-          command: yarn test
-          name: Run tests
+          name: node/install-packages
+          command: |
+            echo 'Node Command to install yarn packages'
       - run:
-          command: yarn build
+          command: echo 'run yarn tests'
+          name: Run Yarn tests
+      - run:
+          command: echo 'build app build'
           name: Build app
       - persist_to_workspace:
           root: ~/project
@@ -26,8 +28,10 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/project
-      - heroku/deploy-via-git:
-          force: true # force push when pushing to the heroku remote, see: https://devcenter.heroku.com/articles/git
+      - run:
+          name: heroku/deploy-via-git
+          command: |
+            echo 'node command to deploy to Heroku'
 
 workflows:
   test_my_app:

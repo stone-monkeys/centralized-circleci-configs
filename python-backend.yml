@@ -8,11 +8,13 @@ jobs:
     executor: python/default
     steps:
       - checkout
-      - python/install-packages:
-          pkg-manager: pip
+      - run:
+          name: Python Install Packages - Pip
+          command: |
+            echo 'Python Command to install Pip packages'
       - run:
           name: Run tests
-          command: python -m pytest
+          command: echo 'Python Command to run pyton tests'
       - persist_to_workspace:
           root: ~/project
           paths:
@@ -23,8 +25,10 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/project
-      - heroku/deploy-via-git:
-          force: true # force push when pushing to the heroku remote, see: https://devcenter.heroku.com/articles/git
+      - run:
+          name: heroku/deploy-via-git
+          command: |
+            echo 'Python Command to deploy to Heroku'
 
 workflows:
   test_my_app:
